@@ -1,0 +1,12 @@
+language: java
+
+install:
+  - ./gradlew assemble
+
+script:
+  - ./travis-test.sh
+
+jdk:
+   - oraclejdk8
+
+sudo: false
