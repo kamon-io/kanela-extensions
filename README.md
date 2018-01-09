@@ -11,5 +11,5 @@ Available extensions:
 - Read the [**Changelog**](CHANGELOG.md) for more info.
 
 [kamon-agent]:https://github.com/kamon-io/kamon-agent
-[agent-scala-extension]:tree/master/agent-scala-extension
-[agent-kotlin-extension]:tree/master/agent-kotlin-extension
+[agent-scala-extension]:agent-scala-extension
+[agent-kotlin-extension]:agent-kotlin-extension
