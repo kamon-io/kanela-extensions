@@ -32,9 +32,6 @@ dependencies {
     compile 'ch.qos.logback:logback-core:1.2.3'
     compile 'ch.qos.logback:logback-classic:1.2.3'
 
-    compile 'io.kamon:kamon-autoweave_%%:0.6.5'
-    compile 'io.kamon:agent-scala-extension_%%:0.0.8-experimental'
-
     provided(kamon_agent_dep)
 
     testCompile 'org.mockito:mockito-core:2.4.2'
