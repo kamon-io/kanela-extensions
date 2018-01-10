@@ -28,7 +28,7 @@ import java.lang.instrument.Instrumentation
 
 object KamonInstrumentationSpec : Spek({
 
-    describe("a KamonInstrumentation form agent-kotlin-extension") {
+    describe("a KamonInstrumentation from agent-kotlin-extension") {
 
         on("instrumenting with a single mixin") {
 
