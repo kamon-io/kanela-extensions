@@ -64,11 +64,11 @@ test {
 bintray {
     user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
     key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-    publications = ['kotlinPublication']
+    publications = ['KamonKotlinExt']
 
     pkg {
         repo = 'releases'
-        name = 'agent-kotlin-extension'
+        name = 'kamon-agent-kotlin-extension'
         userOrg = 'kamon-io'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/kamon-io/kamon-agent-extensions'
@@ -115,12 +115,12 @@ def pomConfig = {
 
 publishing {
     publications {
-        kotlinPublication(MavenPublication) { publication ->
+        KamonKotlinExt(MavenPublication) { publication ->
             from components.java
             artifact sourcesJar
             artifact javadocJar
             groupId 'io.kamon'
-            artifactId 'agent-kotlin-extension'
+            artifactId 'kamon-agent-kotlin-extension'
             version "${version}"
             pom.withXml {
                 def root = asNode()
