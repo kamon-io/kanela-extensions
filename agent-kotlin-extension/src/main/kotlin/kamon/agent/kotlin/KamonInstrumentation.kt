@@ -20,81 +20,69 @@ import kamon.agent.api.instrumentation.InstrumentationDescription
 import kamon.agent.libs.io.vavr.Function1
 import kamon.agent.libs.net.bytebuddy.description.method.MethodDescription
 import kamon.agent.libs.net.bytebuddy.matcher.ElementMatcher
-import java.util.function.Supplier
 import kamon.agent.api.instrumentation.KamonInstrumentation as JKamonInstrumentation
 import kamon.agent.libs.net.bytebuddy.matcher.ElementMatchers as BBMatchers
 
 typealias Element = ElementMatcher.Junction<MethodDescription>
 
-class KamonInstrumentation: JKamonInstrumentation(), ElementMatcherSugar {
+class KamonInstrumentation : JKamonInstrumentation() {
 
-    fun forSubtypeOf(name: String, instrumentationFun: (InstrumentationDescription.Builder) -> InstrumentationDescription) {
-        super.forSubtypeOf(name.supplied(), instrumentationFun.toVavrFunc())
-    }
+    fun forSubtypeOf(name: String, instrumentationFun: InstrumentationDescription.Builder.() -> InstrumentationDescription.Builder) =
+            super.forSubtypeOf({ name }, instrumentationFun.build().toVavrFunc())
 
-    fun forSubtypeOf(names: List<String>, instrumentationFun: (InstrumentationDescription.Builder) -> InstrumentationDescription) {
-        names.forEach { forSubtypeOf(it, instrumentationFun) }
-    }
 
-    fun forTargetType(name: String, instrumentationFun: (InstrumentationDescription.Builder) -> InstrumentationDescription) {
-        super.forTargetType(name.supplied(), instrumentationFun.toVavrFunc())
-    }
+    fun forSubtypeOf(names: List<String>, instrumentationFun: (InstrumentationDescription.Builder) -> InstrumentationDescription.Builder) =
+            names.forEach { forSubtypeOf(it, instrumentationFun) }
 
-    fun forTargetType(names: List<String>, instrumentationFun: (InstrumentationDescription.Builder) -> InstrumentationDescription) {
-        names.forEach { forTargetType(it, instrumentationFun) }
-    }
-}
 
-interface ElementMatcherSugar {
+    fun forTargetType(name: String, instrumentationFun: (InstrumentationDescription.Builder) -> InstrumentationDescription) =
+            super.forTargetType({ name }, instrumentationFun.toVavrFunc())
+
+
+    fun forTargetType(names: List<String>, instrumentationFun: (InstrumentationDescription.Builder) -> InstrumentationDescription) =
+            names.forEach { forTargetType(it, instrumentationFun) }
 
 
     fun isConstructor(): Element = BBMatchers.isConstructor()
 
-    fun isAbstract(): Element =
-    BBMatchers.isAbstract()
+    fun isAbstract(): Element = BBMatchers.isAbstract()
 
-    fun method(name: String): Element =
-    BBMatchers.named(name)
+    fun method(name: String): Element = BBMatchers.named(name)
 
-    fun takesArguments(quantity: Int): Element =
-    BBMatchers.takesArguments(quantity)
+    fun takesArguments(quantity: Int): Element = BBMatchers.takesArguments(quantity)
 
-    fun takesArguments(vararg classes: Class<*>): Element =
-        BBMatchers.takesArguments(*classes)
+    fun takesVarArguments(vararg classes: Class<*>): Element = BBMatchers.takesArguments(*classes)
 
-    fun withArgument(index: Int, `type`: Class<*>): Element =
-    BBMatchers.takesArgument(index, `type`)
+    inline fun <reified T> takes1Argument(): Element = BBMatchers.takesArguments(T::class.java)
 
-    fun anyMethod(vararg names: String): Element =
-        names.map { method(it) }.reduce { a, b -> a.or(b) }
+    inline fun <reified T, reified R> takes2Arguments(): Element = BBMatchers.takesArguments(T::class.java, R::class.java)
 
-    infix fun String.or(right: String): List<String> {
-        return listOf(this, right)
+    inline fun <reified T, reified R, reified S> takes3Arguments(): Element = BBMatchers.takesArguments(T::class.java, R::class.java, S::class.java)
+
+    inline fun <reified T> withArgument(index: Int): Element = BBMatchers.takesArgument(index, T::class.java)
+
+    fun anyMethod(vararg names: String): Element = names.map { method(it) }.reduce { a, b -> a.or(b) }
+
+    infix fun String.or(right: String): List<String> = listOf(this, right)
+
+    infix fun List<String>.or(right: String): List<String> = this.plus(right)
+
+    infix fun Element.and(right: Element): Element = this.and(right)
+
+    private fun ((InstrumentationDescription.Builder) -> InstrumentationDescription.Builder).build(): (InstrumentationDescription.Builder) -> InstrumentationDescription = { builder ->
+        invoke(builder).build()
     }
 
-    infix fun List<String>.or(right: String): List<String> {
-        return this.plus(right)
-    }
+}
 
-    infix fun Element.and(right: Element): Element {
-        return this.and(right)
+fun kamonInstrumentation(init: KamonInstrumentation.() -> Unit): KamonInstrumentation = KamonInstrumentation().apply(init)
+
+fun <A, B> ((A) -> B).toVavrFunc(): Function1<A, B> = object : Function1<A, B> {
+    override fun apply(v: A): B {
+        return this@toVavrFunc(v)
     }
 }
 
-fun String.supplied(): Supplier<String> = Supplier { this }
-fun <T> Class<T>.supplied(): Supplier<Class<*>> = Supplier { this }
-
-fun <A, B> ((A) -> B).toVavrFunc(): Function1<A, B> {
-    val underlyingFunc = this
-    return object : Function1<A, B> {
-        override fun apply(v: A): B {
-            return underlyingFunc(v)
-        }
-    }
-}
-
-fun kamonInstrumentation(init: KamonInstrumentation.() -> Unit): KamonInstrumentation {
-    val kamonInstrumentation = KamonInstrumentation()
-    kamonInstrumentation.init()
-    return kamonInstrumentation
-}
+inline fun <reified T> InstrumentationDescription.Builder.withMixin(): InstrumentationDescription.Builder = withMixin({ T::class.java })
+inline fun <reified T> InstrumentationDescription.Builder.withAdvisorFor(methodDescription: ElementMatcher.Junction<MethodDescription>): InstrumentationDescription.Builder =
+        withAdvisorFor(methodDescription, { T::class.java })
