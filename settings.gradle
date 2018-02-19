@@ -15,7 +15,7 @@
  */
 
 
-rootProject.name = 'kamon-agent-extensions'
+rootProject.name = 'kanela-extensions'
 
-include 'agent-scala-extension'
-include 'agent-kotlin-extension'
+include 'kanela-scala-extension'
+include 'kanela-kotlin-extension'

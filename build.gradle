@@ -17,7 +17,7 @@
 buildscript {
     ext.kotlin_version = '1.1.51'
     ext.agent_version = '0.0.9-experimental'
-    ext.kamon_agent_dep = "io.kamon:kamon-agent:${agent_version}"
+    ext.kamon_agent_dep = "io.kamon:kanela-agent:${agent_version}"
     repositories {
         mavenCentral()
     }
