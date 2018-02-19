@@ -39,10 +39,8 @@ object KamonInstrumentationSpec : Spek({
             val instrumentationMock = mock<Instrumentation> {}
 
             val ki = kamonInstrumentation {
-                forSubtypeOf("laala") {
-                    it
-                            .withMixin(ExampleMixin::class.java.supplied())
-                            .build()
+                forSubtypeOf("foo") {
+                    withMixin<ExampleMixin>()
                 }
             }
 
@@ -70,10 +68,8 @@ object KamonInstrumentationSpec : Spek({
             val instrumentationMock = mock<Instrumentation> {}
 
             val ki = kamonInstrumentation {
-                forSubtypeOf("laala") {
-                    it
-                            .withMixin(ExampleMixin::class.java.supplied())
-                            .build()
+                forSubtypeOf("foo") {
+                    withMixin<ExampleMixin>()
                 }
             }
 
@@ -103,15 +99,9 @@ object KamonInstrumentationSpec : Spek({
             val instrumentationMock = mock<Instrumentation> {}
 
             val ki = kamonInstrumentation {
-                forSubtypeOf("laala") { builder ->
-                    builder
-                            .withMixin(ExampleMixin::class.java.supplied())
-                            .withAdvisorFor(
-                                    method("executeMethod")
-                                            and
-                                            takesArguments(String::class.java, Int::class.java),
-                                    ExampleAdvisor::class.java.supplied())
-                            .build()
+                forSubtypeOf("foo") {
+                    withMixin<ExampleMixin>()
+                    .withAdvisorFor<ExampleAdvisor>(method("executeMethod") and takes2Arguments<String, Int>())
                 }
             }
 
@@ -140,15 +130,9 @@ object KamonInstrumentationSpec : Spek({
             val instrumentationMock = mock<Instrumentation> {}
 
             val ki = kamonInstrumentation {
-                forSubtypeOf("laala") { builder ->
-                    builder
-                            .withMixin(ExampleMixin::class.java.supplied())
-                            .withAdvisorFor(
-                                    method("executeMethod")
-                                            and
-                                            takesArguments(String::class.java, Int::class.java),
-                                    ExampleAdvisor::class.java.supplied())
-                            .build()
+                forSubtypeOf("foo") {
+                    withMixin<ExampleMixin>()
+                    .withAdvisorFor<ExampleAdvisor>(method("executeMethod") and takes2Arguments<String, Int>())
                 }
             }
 
