@@ -53,7 +53,7 @@ bintray {
 
     pkg {
         repo = 'releases'
-        name = 'agent-scala-extension'
+        name = 'kanela-scala-extension'
         userOrg = 'kamon-io'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/kamon-io/kamon-agent-extensions'
@@ -105,7 +105,7 @@ publishing {
             artifact sourcesJar
             artifact javadocJar
             groupId 'io.kamon'
-            artifactId 'agent-scala-extension'
+            artifactId 'kanela-scala-extension'
             version "${version}"
             pom.withXml {
                 def root = asNode()

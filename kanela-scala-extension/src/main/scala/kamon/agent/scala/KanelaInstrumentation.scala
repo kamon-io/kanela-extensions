@@ -18,19 +18,19 @@ package kamon.agent.scala
 
 import java.util.function.{BiFunction => JBifunction, Supplier => JSupplier}
 
-import kamon.agent.api.instrumentation.{InstrumentationDescription, KamonInstrumentation => JKamonInstrumentation}
-import kamon.agent.libs.io.vavr.{Function1 => JFunction1, Function2 => JFunction2, Function4 => JFunction4}
-import kamon.agent.libs.net.bytebuddy.description.`type`.TypeDescription
-import kamon.agent.libs.net.bytebuddy.description.method.MethodDescription
-import kamon.agent.libs.net.bytebuddy.dynamic.DynamicType.Builder
-import kamon.agent.libs.net.bytebuddy.implementation.MethodDelegation
-import kamon.agent.libs.net.bytebuddy.matcher.ElementMatcher.Junction
-import kamon.agent.libs.net.bytebuddy.matcher.{ElementMatchers => BBMatchers}
-import kamon.agent.libs.net.bytebuddy.utility.JavaModule
+import kanela.agent.api.instrumentation.{InstrumentationDescription, KanelaInstrumentation => JKanelalInstrumentation}
+import kanela.agent.libs.io.vavr.{Function1 => JFunction1, Function2 => JFunction2, Function4 => JFunction4}
+import kanela.agent.libs.net.bytebuddy.description.`type`.TypeDescription
+import kanela.agent.libs.net.bytebuddy.description.method.MethodDescription
+import kanela.agent.libs.net.bytebuddy.dynamic.DynamicType.Builder
+import kanela.agent.libs.net.bytebuddy.implementation.MethodDelegation
+import kanela.agent.libs.net.bytebuddy.matcher.ElementMatcher.Junction
+import kanela.agent.libs.net.bytebuddy.matcher.{ElementMatchers => BBMatchers}
+import kanela.agent.libs.net.bytebuddy.utility.JavaModule
 
 import scala.collection.immutable.Seq
 
-trait KamonInstrumentation extends JKamonInstrumentation with MethodDescriptionSugar {
+trait KanelaInstrumentation extends JKanelalInstrumentation with MethodDescriptionSugar {
 
   private implicit def toJavaFunction2[A, B, C](f: (A, B) ⇒ C): JFunction2[A, B, C] =
     new JFunction2[A, B, C]() {
@@ -81,14 +81,6 @@ trait KamonInstrumentation extends JKamonInstrumentation with MethodDescriptionS
   }
 
   implicit class PimpInstrumentationBuilder(instrumentationBuilder: InstrumentationDescription.Builder) {
-    @deprecated("Use withInterceptorFor", "0.0.4")
-    def withTransformationFor(method: Junction[MethodDescription], delegate: Class[_]) =
-      addTransformation((builder, _, _, _) ⇒ builder.method(method).intercept(MethodDelegation.to(delegate)))
-
-    @deprecated("Use withInterceptorFor", "0.0.4")
-    def withTransformationFor(method: Junction[MethodDescription], delegate: AnyRef) =
-      addTransformation((builder, _, _, _) ⇒ builder.method(method).intercept(MethodDelegation.to(delegate)))
-
     def addTransformation(f: ⇒ (Builder[_], TypeDescription, ClassLoader, JavaModule) ⇒ Builder[_]) =
       instrumentationBuilder.withTransformation(f)
 
@@ -97,6 +89,12 @@ trait KamonInstrumentation extends JKamonInstrumentation with MethodDescriptionS
 
     def withInterceptorFor(method: Junction[MethodDescription], delegate: AnyRef) =
       withTransformationFor(method, delegate)
+
+    private def withTransformationFor(method: Junction[MethodDescription], delegate: Class[_]) =
+      addTransformation((builder, _, _, _) ⇒ builder.method(method).intercept(MethodDelegation.to(delegate)))
+
+    private def withTransformationFor(method: Junction[MethodDescription], delegate: AnyRef) =
+      addTransformation((builder, _, _, _) ⇒ builder.method(method).intercept(MethodDelegation.to(delegate)))
   }
 }
 
@@ -124,7 +122,4 @@ trait MethodDescriptionSugar {
 
   def anyMethod(names: String*): Junction[MethodDescription] =
     names.map(method).reduce((a, b) => a.or[MethodDescription](b): Junction[MethodDescription])
-
-  @deprecated("Use method", "0.0.4" )
-  def named(name: String): Junction[MethodDescription] = method(name)
 }

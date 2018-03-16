@@ -4,8 +4,8 @@
 
 runTests () {
   ./gradlew \
-    && ./gradlew :agent-scala-extension:test \
-    && ./gradlew :agent-kotlin-extension:test \
+    && ./gradlew :kanela-scala-extension:test \
+    && ./gradlew :kanela-kotlin-extension:test \
     || exit 1
   echo "[info] $(date) - finished gradle test"
 }

@@ -16,16 +16,16 @@
 
 package kamon.agent.kotlin
 
-import kamon.agent.api.instrumentation.InstrumentationDescription
-import kamon.agent.libs.io.vavr.Function1
-import kamon.agent.libs.net.bytebuddy.description.method.MethodDescription
-import kamon.agent.libs.net.bytebuddy.matcher.ElementMatcher
-import kamon.agent.api.instrumentation.KamonInstrumentation as JKamonInstrumentation
-import kamon.agent.libs.net.bytebuddy.matcher.ElementMatchers as BBMatchers
+import kanela.agent.api.instrumentation.InstrumentationDescription
+import kanela.agent.libs.io.vavr.Function1
+import kanela.agent.libs.net.bytebuddy.description.method.MethodDescription
+import kanela.agent.libs.net.bytebuddy.matcher.ElementMatcher
+import kanela.agent.api.instrumentation.KanelaInstrumentation as JKanelaInstrumentation
+import kanela.agent.libs.net.bytebuddy.matcher.ElementMatchers as BBMatchers
 
 typealias Element = ElementMatcher.Junction<MethodDescription>
 
-class KamonInstrumentation : JKamonInstrumentation() {
+class KamonInstrumentation : JKanelaInstrumentation() {
 
     fun forSubtypeOf(name: String, instrumentationFun: InstrumentationDescription.Builder.() -> InstrumentationDescription.Builder) =
             super.forSubtypeOf({ name }, instrumentationFun.build().toVavrFunc())

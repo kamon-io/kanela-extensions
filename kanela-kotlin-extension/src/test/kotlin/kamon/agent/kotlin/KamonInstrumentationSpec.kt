@@ -17,7 +17,7 @@
 package kamon.agent.kotlin
 
 import com.nhaarman.mockito_kotlin.*
-import kamon.agent.util.conf.AgentConfiguration
+import kanela.agent.util.conf.KanelaConfiguration
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -27,12 +27,10 @@ import java.lang.instrument.Instrumentation
 
 
 object KamonInstrumentationSpec : Spek({
-
     describe("a KamonInstrumentation from agent-kotlin-extension") {
-
         on("instrumenting with a single mixin") {
 
-            val agentConfigMock = mock<AgentConfiguration.ModuleConfiguration> {
+            val agentConfigMock = mock<KanelaConfiguration.ModuleConfiguration> {
                 on { shouldInjectInBootstrap() } doReturn false
             }
 
@@ -61,8 +59,7 @@ object KamonInstrumentationSpec : Spek({
         }
 
         on("instrumenting with a single mixin and for bootstrap injection") {
-
-            val agentConfigMock = mock<AgentConfiguration.ModuleConfiguration> {
+            val agentConfigMock = mock<KanelaConfiguration.ModuleConfiguration> {
                 on { shouldInjectInBootstrap() } doReturn true
             }
             val instrumentationMock = mock<Instrumentation> {}
@@ -92,8 +89,7 @@ object KamonInstrumentationSpec : Spek({
         }
 
         on("instrumenting with mixin and advisor without bootstrap injection") {
-
-            val agentConfigMock = mock<AgentConfiguration.ModuleConfiguration> {
+            val agentConfigMock = mock<KanelaConfiguration.ModuleConfiguration> {
                 on { shouldInjectInBootstrap() } doReturn false
             }
             val instrumentationMock = mock<Instrumentation> {}
@@ -121,10 +117,8 @@ object KamonInstrumentationSpec : Spek({
             }
         }
 
-        // FIXME mock BootstrapInjector in order to not create a jar file and so on
         on("instrumenting with mixin and advisor for bootstrap injection") {
-
-            val agentConfigMock = mock<AgentConfiguration.ModuleConfiguration> {
+            val agentConfigMock = mock<KanelaConfiguration.ModuleConfiguration> {
                 on { shouldInjectInBootstrap() } doReturn true
             }
             val instrumentationMock = mock<Instrumentation> {}

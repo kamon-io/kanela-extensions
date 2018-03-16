@@ -16,7 +16,7 @@
 
 buildscript {
     ext.kotlin_version = '1.1.51'
-    ext.agent_version = '0.0.9-experimental'
+    ext.agent_version = '0.0.12'
     ext.kamon_agent_dep = "io.kamon:kanela-agent:${agent_version}"
     repositories {
         mavenCentral()
@@ -49,7 +49,7 @@ allprojects {
 
     dependencies {
         compile 'io.vavr:vavr:0.9.2'
-        compileOnly 'org.projectlombok:lombok:1.16.18'
+        compileOnly 'org.projectlombok:lombok:1.16.20'
 
         agent(kamon_agent_dep)
     }

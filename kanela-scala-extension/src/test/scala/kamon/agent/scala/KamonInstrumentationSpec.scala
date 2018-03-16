@@ -2,23 +2,23 @@ package kamon.agent.scala
 
 import java.lang.instrument.Instrumentation
 
-import kamon.agent.libs.net.bytebuddy.description.method.MethodDescription
-import kamon.agent.libs.net.bytebuddy.matcher.ElementMatcher.Junction
-import kamon.agent.util.conf.AgentConfiguration
+import kanela.agent.libs.net.bytebuddy.description.method.MethodDescription
+import kanela.agent.libs.net.bytebuddy.matcher.ElementMatcher.Junction
+import kanela.agent.util.conf.KanelaConfiguration
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpec}
 import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers.any
 
 class KamonInstrumentationSpec extends WordSpec with Matchers with BeforeAndAfterAll {
 
-  "a KamonInstrumentation from agent-scala-extension" when {
+  "a KanelaInstrumentation from kanela-scala-extension" when {
     "instrumenting with a single mixin" should {
 
       val instrumentationMock = mock(classOf[Instrumentation])
-      val moduleConfigurationMock = mock(classOf[AgentConfiguration.ModuleConfiguration])
+      val moduleConfigurationMock = mock(classOf[KanelaConfiguration.ModuleConfiguration])
       when(moduleConfigurationMock.shouldInjectInBootstrap()).thenReturn(false)
 
-      val ki = new KamonInstrumentation {
+      val ki = new KanelaInstrumentation {
         forSubtypeOf("laala") { builder ⇒
           builder
             .withMixin(classOf[ExampleMixin])
@@ -27,7 +27,6 @@ class KamonInstrumentationSpec extends WordSpec with Matchers with BeforeAndAfte
       }
 
       "return a single transformation" in {
-
         val transformations = ki.collectTransformations(moduleConfigurationMock, instrumentationMock)
         transformations.size shouldBe 1
         val transformation = transformations.get(0)
@@ -45,12 +44,11 @@ class KamonInstrumentationSpec extends WordSpec with Matchers with BeforeAndAfte
     }
 
     "instrumenting with a single mixin and for bootstrap injection" should {
-
       val instrumentationMock = mock(classOf[Instrumentation])
-      val moduleConfigurationMock = mock(classOf[AgentConfiguration.ModuleConfiguration])
+      val moduleConfigurationMock = mock(classOf[KanelaConfiguration.ModuleConfiguration])
       when(moduleConfigurationMock.shouldInjectInBootstrap()).thenReturn(true)
 
-      val ki = new KamonInstrumentation {
+      val ki = new KanelaInstrumentation {
         forSubtypeOf("laala") { builder ⇒
           builder
             .withMixin(classOf[ExampleMixin])
@@ -59,7 +57,6 @@ class KamonInstrumentationSpec extends WordSpec with Matchers with BeforeAndAfte
       }
 
       "return a single transformation" in {
-
         val transformations = ki.collectTransformations(moduleConfigurationMock, instrumentationMock)
         transformations.size shouldBe 1
         val transformation = transformations.get(0)
@@ -79,12 +76,11 @@ class KamonInstrumentationSpec extends WordSpec with Matchers with BeforeAndAfte
     }
 
     "instrumenting with mixin and advisor without bootstrap injection" should {
-
       val instrumentationMock = mock(classOf[Instrumentation])
-      val moduleConfigurationMock = mock(classOf[AgentConfiguration.ModuleConfiguration])
+      val moduleConfigurationMock = mock(classOf[KanelaConfiguration.ModuleConfiguration])
       when(moduleConfigurationMock.shouldInjectInBootstrap()).thenReturn(false)
 
-      val ki = new KamonInstrumentation {
+      val ki = new KanelaInstrumentation {
 
         val methodMatcher: Junction[MethodDescription] = method("executeMethod")
           .and(takesArguments(classOf[String], classOf[Int]))
@@ -98,7 +94,6 @@ class KamonInstrumentationSpec extends WordSpec with Matchers with BeforeAndAfte
       }
 
       "return two transformations" in {
-
         val transformations = ki.collectTransformations(moduleConfigurationMock, instrumentationMock)
         transformations.size shouldBe 1
         val transformation = transformations.get(0)
@@ -116,12 +111,11 @@ class KamonInstrumentationSpec extends WordSpec with Matchers with BeforeAndAfte
     }
 
     "instrumenting with mixin and advisor for bootstrap injection" should {
-
       val instrumentationMock = mock(classOf[Instrumentation])
-      val moduleConfigurationMock = mock(classOf[AgentConfiguration.ModuleConfiguration])
+      val moduleConfigurationMock = mock(classOf[KanelaConfiguration.ModuleConfiguration])
       when(moduleConfigurationMock.shouldInjectInBootstrap()).thenReturn(true)
 
-      val ki = new KamonInstrumentation {
+      val ki = new KanelaInstrumentation {
 
         val methodMatcher: Junction[MethodDescription] = method("executeMethod")
           .and(takesArguments(classOf[String], classOf[Int]))

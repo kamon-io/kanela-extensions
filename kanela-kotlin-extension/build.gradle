@@ -68,7 +68,7 @@ bintray {
 
     pkg {
         repo = 'releases'
-        name = 'agent-kotlin-extension'
+        name = 'kanela-kotlin-extension'
         userOrg = 'kamon-io'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/kamon-io/kamon-agent-extensions'
@@ -120,7 +120,7 @@ publishing {
             artifact sourcesJar
             artifact javadocJar
             groupId 'io.kamon'
-            artifactId 'agent-kotlin-extension'
+            artifactId 'kanela-kotlin-extension'
             version "${version}"
             pom.withXml {
                 def root = asNode()
