@@ -1,4 +1,4 @@
-package kamon.agent.scala
+package kanela.agent.scala
 
 import java.lang.instrument.Instrumentation
 

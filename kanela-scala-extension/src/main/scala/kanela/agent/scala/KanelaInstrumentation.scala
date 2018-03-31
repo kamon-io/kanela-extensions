@@ -14,7 +14,7 @@
  * =========================================================================================
  */
 
-package kamon.agent.scala
+package kanela.agent.scala
 
 import java.util.function.{BiFunction => JBifunction, Supplier => JSupplier}
 
@@ -119,6 +119,9 @@ trait MethodDescriptionSugar {
 
   def withArgument(index: Int, `type`: Class[_]): Junction[MethodDescription] =
     BBMatchers.takesArgument(index, `type`)
+
+  def withArgument(`type`: Class[_]): Junction[MethodDescription] =
+    withArgument(0, `type`)
 
   def anyMethod(names: String*): Junction[MethodDescription] =
     names.map(method).reduce((a, b) => a.or[MethodDescription](b): Junction[MethodDescription])

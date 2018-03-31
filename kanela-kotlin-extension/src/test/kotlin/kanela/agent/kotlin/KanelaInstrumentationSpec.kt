@@ -14,7 +14,7 @@
  * =========================================================================================
  */
 
-package kamon.agent.kotlin
+package kanela.agent.kotlin
 
 import com.nhaarman.mockito_kotlin.*
 import kanela.agent.util.conf.KanelaConfiguration
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import java.lang.instrument.Instrumentation
 
 
-object KamonInstrumentationSpec : Spek({
+object KanelaInstrumentationSpec : Spek({
     describe("a KamonInstrumentation from agent-kotlin-extension") {
         on("instrumenting with a single mixin") {
 
@@ -97,7 +97,7 @@ object KamonInstrumentationSpec : Spek({
             val ki = kamonInstrumentation {
                 forSubtypeOf("foo") {
                     withMixin<ExampleMixin>()
-                    .withAdvisorFor<ExampleAdvisor>(method("executeMethod") and takes2Arguments<String, Int>())
+                            .withAdvisorFor<ExampleAdvisor>(method("executeMethod") and takes2Arguments<String, Int>())
                 }
             }
 
@@ -126,7 +126,7 @@ object KamonInstrumentationSpec : Spek({
             val ki = kamonInstrumentation {
                 forSubtypeOf("foo") {
                     withMixin<ExampleMixin>()
-                    .withAdvisorFor<ExampleAdvisor>(method("executeMethod") and takes2Arguments<String, Int>())
+                            .withAdvisorFor<ExampleAdvisor>(method("executeMethod") and takes2Arguments<String, Int>())
                 }
             }
 

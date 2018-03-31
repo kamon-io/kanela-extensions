@@ -14,7 +14,7 @@
  * =========================================================================================
  */
 
-package kamon.agent.kotlin
+package kanela.agent.kotlin
 
 import kanela.agent.api.instrumentation.InstrumentationDescription
 import kanela.agent.libs.io.vavr.Function1
@@ -25,7 +25,7 @@ import kanela.agent.libs.net.bytebuddy.matcher.ElementMatchers as BBMatchers
 
 typealias Element = ElementMatcher.Junction<MethodDescription>
 
-class KamonInstrumentation : JKanelaInstrumentation() {
+class KanelaInstrumentation : JKanelaInstrumentation() {
 
     fun forSubtypeOf(name: String, instrumentationFun: InstrumentationDescription.Builder.() -> InstrumentationDescription.Builder) =
             super.forSubtypeOf({ name }, instrumentationFun.build().toVavrFunc())
@@ -75,7 +75,7 @@ class KamonInstrumentation : JKanelaInstrumentation() {
 
 }
 
-fun kamonInstrumentation(init: KamonInstrumentation.() -> Unit): KamonInstrumentation = KamonInstrumentation().apply(init)
+fun kamonInstrumentation(init: KanelaInstrumentation.() -> Unit): KanelaInstrumentation = KanelaInstrumentation().apply(init)
 
 fun <A, B> ((A) -> B).toVavrFunc(): Function1<A, B> = object : Function1<A, B> {
     override fun apply(v: A): B {
