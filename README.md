@@ -10,5 +10,5 @@ Available extensions:
 - Read the [**Changelog**](CHANGELOG.md) for more info.
 
 [kanela]:https://github.com/kamon-io/kanela
-[kanela-scala-extension]:agent-scala-extension
-[kanela-kotlin-extension]:agent-kotlin-extension
+[kanela-scala-extension]:kanela-scala-extension
+[kanela-kotlin-extension]:kanela-kotlin-extension
