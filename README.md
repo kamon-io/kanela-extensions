@@ -1,15 +1,14 @@
-# Kamon Agent Extensions <img align="right" src="https://rawgit.com/kamon-io/Kamon/master/kamon-logo.svg" height="150px" style="padding-left: 20px"/>
-[![Build Status](https://travis-ci.org/kamon-io/kamon-agent-extensions.svg?branch=master)](https://travis-ci.org/kamon-io/kamon-agent-extensions)
-
-**kamon-agent-extensions** provides facilities to other languages to use [kamon-agent] in a more idiomatic way.
+# Kanela Extensions <img align="right" src="https://rawgit.com/kamon-io/Kamon/master/kamon-logo.svg" height="150px" style="padding-left: 20px"/>
+[![Build Status](https://travis-ci.org/kamon-io/kanela-extensions.svg?branch=master)](https://travis-ci.org/kamon-io/kanela-extensions)
+**kanela-extensions** provides facilities to other languages to use [kanela] in a more idiomatic way.
 
 Available extensions:
 
-* [agent-scala-extension]
-* [agent-kotlin-extension]
+* [kanela-scala-extension]
+* [kanela-kotlin-extension]
 
 - Read the [**Changelog**](CHANGELOG.md) for more info.
 
-[kamon-agent]:https://github.com/kamon-io/kamon-agent
-[agent-scala-extension]:agent-scala-extension
-[agent-kotlin-extension]:agent-kotlin-extension
+[kanela]:https://github.com/kamon-io/kanela
+[kanela-scala-extension]:agent-scala-extension
+[kanela-kotlin-extension]:agent-kotlin-extension
