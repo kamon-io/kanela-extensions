@@ -37,6 +37,7 @@ class KamonInstrumentationSpec extends WordSpec with Matchers with BeforeAndAfte
         transformation.getElementMatcher.isDefined shouldBe true
 
         verify(moduleConfigurationMock).shouldInjectInBootstrap()
+        verify(moduleConfigurationMock).shouldSupportLegacyBytecode()
         verifyNoMoreInteractions(moduleConfigurationMock)
         verifyNoMoreInteractions(instrumentationMock)
 
@@ -67,6 +68,7 @@ class KamonInstrumentationSpec extends WordSpec with Matchers with BeforeAndAfte
         transformation.getElementMatcher.isDefined shouldBe true
 
         verify(moduleConfigurationMock).shouldInjectInBootstrap()
+        verify(moduleConfigurationMock).shouldSupportLegacyBytecode()
         verify(moduleConfigurationMock).getTempDir
         verify(instrumentationMock).appendToBootstrapClassLoaderSearch(any())
         verifyNoMoreInteractions(moduleConfigurationMock)
@@ -104,6 +106,7 @@ class KamonInstrumentationSpec extends WordSpec with Matchers with BeforeAndAfte
         transformation.getElementMatcher.isDefined shouldBe true
 
         verify(moduleConfigurationMock).shouldInjectInBootstrap()
+        verify(moduleConfigurationMock).shouldSupportLegacyBytecode()
         verifyNoMoreInteractions(moduleConfigurationMock)
         verifyNoMoreInteractions(instrumentationMock)
 
@@ -141,6 +144,7 @@ class KamonInstrumentationSpec extends WordSpec with Matchers with BeforeAndAfte
 
         verify(moduleConfigurationMock).shouldInjectInBootstrap()
         verify(moduleConfigurationMock).getTempDir
+        verify(moduleConfigurationMock).shouldSupportLegacyBytecode
         verify(instrumentationMock).appendToBootstrapClassLoaderSearch(any())
         verifyNoMoreInteractions(moduleConfigurationMock)
         verifyNoMoreInteractions(instrumentationMock)

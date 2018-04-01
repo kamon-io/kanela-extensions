@@ -53,6 +53,7 @@ object KanelaInstrumentationSpec : Spek({
                 assertEquals(transformation.elementMatcher.isDefined, true)
 
                 verify(agentConfigMock).shouldInjectInBootstrap()
+                verify(agentConfigMock).shouldSupportLegacyBytecode()
                 verifyNoMoreInteractions(agentConfigMock)
                 verifyNoMoreInteractions(instrumentationMock)
             }
@@ -81,6 +82,7 @@ object KanelaInstrumentationSpec : Spek({
                 assertEquals(transformation.elementMatcher.isDefined, true)
 
                 verify(agentConfigMock).shouldInjectInBootstrap()
+                verify(agentConfigMock).shouldSupportLegacyBytecode()
                 verify(agentConfigMock).tempDir
                 verifyNoMoreInteractions(agentConfigMock)
                 verify(instrumentationMock).appendToBootstrapClassLoaderSearch(any())
@@ -112,6 +114,7 @@ object KanelaInstrumentationSpec : Spek({
                 assertEquals(transformation.elementMatcher.isDefined, true)
 
                 verify(agentConfigMock).shouldInjectInBootstrap()
+                verify(agentConfigMock).shouldSupportLegacyBytecode()
                 verifyNoMoreInteractions(agentConfigMock)
                 verifyNoMoreInteractions(instrumentationMock)
             }
@@ -141,6 +144,7 @@ object KanelaInstrumentationSpec : Spek({
                 assertEquals(transformation.elementMatcher.isDefined, true)
 
                 verify(agentConfigMock).shouldInjectInBootstrap()
+                verify(agentConfigMock).shouldSupportLegacyBytecode()
                 verify(agentConfigMock).tempDir
                 verifyNoMoreInteractions(agentConfigMock)
                 verify(instrumentationMock).appendToBootstrapClassLoaderSearch(any())
