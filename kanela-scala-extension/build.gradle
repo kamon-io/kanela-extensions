@@ -19,15 +19,16 @@ plugins {
     id 'maven-publish'
     id 'com.jfrog.bintray' version '1.7.3'
     id 'com.github.maiflai.scalatest' version '0.18'
-    id 'com.adtran.scala-multiversion-plugin' version '1.0.28'
 }
+
+def _Scala = suffixScala(scala_version)
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'org.scala-lang:scala-library:%scala-version%'
+    compile "org.scala-lang:scala-library:$scala_version"
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'ch.qos.logback:logback-core:1.2.3'
     compile 'ch.qos.logback:logback-classic:1.2.3'
@@ -35,7 +36,7 @@ dependencies {
     provided(kamon_agent_dep)
 
     testCompile 'org.mockito:mockito-core:2.4.2'
-    testCompile 'org.scalatest:scalatest_%%:3.0.1'
+    testCompile "org.scalatest:scalatest$_Scala:3.0.1"
     testRuntime 'org.pegdown:pegdown:1.4.2'
 }
 
@@ -94,18 +95,19 @@ def pomConfig = {
     }
 
     scm {
-        url "https://github.com/kamon-io/kamon-agent-extensions"
+        url "https://github.com/kamon-io/kanela-extensions"
     }
 }
 
 publishing {
     publications {
         scalaPublication(MavenPublication) { publication ->
+            def scalaVersion = scala_version
             from components.java
             artifact sourcesJar
             artifact javadocJar
             groupId 'io.kamon'
-            artifactId 'kanela-scala-extension'
+            artifactId "kanela-scala-extension$_Scala"
             version "${version}"
             pom.withXml {
                 def root = asNode()
@@ -126,4 +128,9 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
+}
+
+static def suffixScala(String scalaVersion) {
+    def parts = scalaVersion.split('\\.')
+    "_${parts[0]}.${parts[1]}"
 }
