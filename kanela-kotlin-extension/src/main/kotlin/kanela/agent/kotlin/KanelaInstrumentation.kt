@@ -25,7 +25,7 @@ import kanela.agent.libs.net.bytebuddy.matcher.ElementMatchers as BBMatchers
 
 typealias Element = ElementMatcher.Junction<MethodDescription>
 
-class KanelaInstrumentation : JKanelaInstrumentation() {
+open class KanelaInstrumentation : JKanelaInstrumentation() {
 
     fun forSubtypeOf(name: String, instrumentationFun: InstrumentationDescription.Builder.() -> InstrumentationDescription.Builder) =
             super.forSubtypeOf({ name }, instrumentationFun.build().toVavrFunc())
