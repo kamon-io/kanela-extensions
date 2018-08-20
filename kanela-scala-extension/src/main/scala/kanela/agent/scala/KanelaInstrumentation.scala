@@ -25,7 +25,7 @@ import kanela.agent.libs.net.bytebuddy.description.method.MethodDescription
 import kanela.agent.libs.net.bytebuddy.dynamic.DynamicType.Builder
 import kanela.agent.libs.net.bytebuddy.implementation.MethodDelegation
 import kanela.agent.libs.net.bytebuddy.matcher.ElementMatcher.Junction
-import kanela.agent.libs.net.bytebuddy.matcher.{ElementMatchers => BBMatchers}
+import kanela.agent.libs.net.bytebuddy.matcher.{ElementMatcher, ElementMatchers => BBMatchers}
 import kanela.agent.libs.net.bytebuddy.utility.JavaModule
 
 import scala.collection.immutable.Seq
@@ -61,7 +61,7 @@ trait KanelaInstrumentation extends JKanelalInstrumentation with MethodDescripti
   }
 
   def forSubtypeOf(names: Seq[String])(builder: InstrumentationDescription.Builder ⇒ InstrumentationDescription): Unit = {
-    names.foreach(forSubtypeOf(_, builder))
+    Option(anyTypes(names: _*).orElse(null)).foreach(namesMatcher => forMatchedTypeBy(BBMatchers.hasSuperType(namesMatcher))(builder))
   }
 
   def forTargetType(name: String)(builder: InstrumentationDescription.Builder ⇒ InstrumentationDescription): Unit = {
@@ -69,7 +69,11 @@ trait KanelaInstrumentation extends JKanelalInstrumentation with MethodDescripti
   }
 
   def forTargetType(names: Seq[String])(builder: InstrumentationDescription.Builder ⇒ InstrumentationDescription): Unit = {
-    names.foreach(forTargetType(_)(builder))
+    Option(anyTypes(names: _*).orElse(null)).foreach(namesMatcher => forMatchedTypeBy(namesMatcher)(builder))
+  }
+
+  def forMatchedTypeBy(matcher: ⇒ ElementMatcher[_ >: TypeDescription])(builder: InstrumentationDescription.Builder ⇒ InstrumentationDescription): Unit = {
+    forMatchedTypeBy(matcher, builder)
   }
 
   implicit class OrSyntax(left: String) {
@@ -98,17 +102,17 @@ trait KanelaInstrumentation extends JKanelalInstrumentation with MethodDescripti
   }
 }
 
-trait MethodDescriptionSugar {
+trait MethodDescriptionSugar { self: JKanelalInstrumentation ⇒
 
   val Constructor = isConstructor()
 
-  def isConstructor(): Junction[MethodDescription] =
+  override def isConstructor(): Junction[MethodDescription] =
     BBMatchers.isConstructor()
 
-  def isAbstract(): Junction[MethodDescription] =
+  override def isAbstract(): Junction[MethodDescription] =
     BBMatchers.isAbstract()
 
-  def method(name: String): Junction[MethodDescription] =
+  override def method(name: String): Junction[MethodDescription] =
     BBMatchers.named(name)
 
   def takesArguments(quantity: Int): Junction[MethodDescription] =
@@ -120,7 +124,7 @@ trait MethodDescriptionSugar {
   def withArgument(index: Int, `type`: Class[_]): Junction[MethodDescription] =
     BBMatchers.takesArgument(index, `type`)
 
-  def withArgument(`type`: Class[_]): Junction[MethodDescription] =
+  override def withArgument(`type`: Class[_]): Junction[MethodDescription] =
     withArgument(0, `type`)
 
   def anyMethod(names: String*): Junction[MethodDescription] =
