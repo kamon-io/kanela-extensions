@@ -61,7 +61,7 @@ trait KanelaInstrumentation extends JKanelalInstrumentation with MethodDescripti
   }
 
   def forSubtypeOf(names: Seq[String])(builder: InstrumentationDescription.Builder ⇒ InstrumentationDescription): Unit = {
-    Option(anyTypes(names: _*).orElse(null)).foreach(namesMatcher => forMatchedTypeBy(BBMatchers.hasSuperType(namesMatcher))(builder))
+    forRawMatching(BBMatchers.hasSuperType(anyTypes(names: _*)))(builder)
   }
 
   def forTargetType(name: String)(builder: InstrumentationDescription.Builder ⇒ InstrumentationDescription): Unit = {
@@ -69,11 +69,11 @@ trait KanelaInstrumentation extends JKanelalInstrumentation with MethodDescripti
   }
 
   def forTargetType(names: Seq[String])(builder: InstrumentationDescription.Builder ⇒ InstrumentationDescription): Unit = {
-    Option(anyTypes(names: _*).orElse(null)).foreach(namesMatcher => forMatchedTypeBy(namesMatcher)(builder))
+    forRawMatching(anyTypes(names: _*))(builder)
   }
 
-  def forMatchedTypeBy(matcher: ⇒ ElementMatcher[_ >: TypeDescription])(builder: InstrumentationDescription.Builder ⇒ InstrumentationDescription): Unit = {
-    forMatchedTypeBy(matcher, builder)
+  def forRawMatching(matcher: ⇒ ElementMatcher[_ >: TypeDescription])(builder: InstrumentationDescription.Builder ⇒ InstrumentationDescription): Unit = {
+    forRawMatching(matcher, builder)
   }
 
   implicit class OrSyntax(left: String) {
