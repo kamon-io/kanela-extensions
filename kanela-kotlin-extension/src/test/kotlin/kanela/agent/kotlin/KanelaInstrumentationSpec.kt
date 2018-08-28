@@ -46,9 +46,9 @@ object KanelaInstrumentationSpec : Spek({
                 val transformations = ki.collectTransformations(agentConfigMock, instrumentationMock)
                 assertEquals(transformations.size, 1)
                 val transformation = transformations[0]
-                assertEquals(transformation.mixins.size(), 1)
-                assertEquals(transformation.bridges.size(), 0)
-                assertEquals(transformation.transformations.size(), 0)
+                assertEquals(transformation.mixins.size, 1)
+                assertEquals(transformation.bridges.size, 0)
+                assertEquals(transformation.transformations.size, 0)
                 assertEquals(transformation.isActive, true)
                 assertEquals(transformation.elementMatcher.isDefined, true)
 
@@ -75,9 +75,9 @@ object KanelaInstrumentationSpec : Spek({
                 val transformations = ki.collectTransformations(agentConfigMock, instrumentationMock)
                 assertEquals(transformations.size, 1)
                 val transformation = transformations[0]
-                assertEquals(transformation.mixins.size(), 1)
-                assertEquals(transformation.bridges.size(), 0)
-                assertEquals(transformation.transformations.size(), 0)
+                assertEquals(transformation.mixins.size, 1)
+                assertEquals(transformation.bridges.size, 0)
+                assertEquals(transformation.transformations.size, 0)
                 assertEquals(transformation.isActive, true)
                 assertEquals(transformation.elementMatcher.isDefined, true)
 
@@ -107,9 +107,9 @@ object KanelaInstrumentationSpec : Spek({
                 val transformations = ki.collectTransformations(agentConfigMock, instrumentationMock)
                 assertEquals(transformations.size, 1)
                 val transformation = transformations[0]
-                assertEquals(transformation.mixins.size(), 1)
-                assertEquals(transformation.bridges.size(), 0)
-                assertEquals(transformation.transformations.size(), 1)
+                assertEquals(transformation.mixins.size, 1)
+                assertEquals(transformation.bridges.size, 0)
+                assertEquals(transformation.transformations.size, 1)
                 assertEquals(transformation.isActive, true)
                 assertEquals(transformation.elementMatcher.isDefined, true)
 
@@ -137,9 +137,9 @@ object KanelaInstrumentationSpec : Spek({
                 val transformations = ki.collectTransformations(agentConfigMock, instrumentationMock)
                 assertEquals(transformations.size, 1)
                 val transformation = transformations[0]
-                assertEquals(transformation.mixins.size(), 1)
-                assertEquals(transformation.bridges.size(), 0)
-                assertEquals(transformation.transformations.size(), 1)
+                assertEquals(transformation.mixins.size, 1)
+                assertEquals(transformation.bridges.size, 0)
+                assertEquals(transformation.transformations.size, 1)
                 assertEquals(transformation.isActive, true)
                 assertEquals(transformation.elementMatcher.isDefined, true)
 

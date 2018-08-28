@@ -15,9 +15,9 @@
  */
 
 buildscript {
-    ext.kotlin_version = project.hasProperty('kotlinVersion') ? project.getProperty('kotlinVersion') : '1.1.51'
+    ext.kotlin_version = project.hasProperty('kotlinVersion') ? project.getProperty('kotlinVersion') : '1.2.61'
     ext.scala_version = project.hasProperty('scalaVersion') ? project.getProperty('scalaVersion') : '2.12.6'
-    ext.agent_version = '0.0.13'
+    ext.agent_version = '0.0.14'
     ext.kamon_agent_dep = "io.kamon:kanela-agent:${agent_version}"
     repositories {
         mavenCentral()

@@ -19,7 +19,9 @@ package kanela.agent.kotlin
 import kanela.agent.api.instrumentation.InstrumentationDescription
 import kanela.agent.libs.io.vavr.Function1
 import kanela.agent.libs.net.bytebuddy.description.method.MethodDescription
+import kanela.agent.libs.net.bytebuddy.description.type.TypeDescription
 import kanela.agent.libs.net.bytebuddy.matcher.ElementMatcher
+import java.util.function.Supplier
 import kanela.agent.api.instrumentation.KanelaInstrumentation as JKanelaInstrumentation
 import kanela.agent.libs.net.bytebuddy.matcher.ElementMatchers as BBMatchers
 
@@ -28,28 +30,30 @@ typealias Element = ElementMatcher.Junction<MethodDescription>
 open class KanelaInstrumentation : JKanelaInstrumentation() {
 
     fun forSubtypeOf(name: String, instrumentationFun: InstrumentationDescription.Builder.() -> InstrumentationDescription.Builder) =
-            super.forSubtypeOf({ name }, instrumentationFun.build().toVavrFunc())
+            super.forSubtypeOf(Supplier { name }, instrumentationFun.build().toVavrFunc())
 
 
     fun forSubtypeOf(names: List<String>, instrumentationFun: (InstrumentationDescription.Builder) -> InstrumentationDescription.Builder) =
-            names.forEach { forSubtypeOf(it, instrumentationFun) }
+            forRawMatching({ BBMatchers.hasSuperType<TypeDescription>(anyTypes(*names.toTypedArray())) }, instrumentationFun.build())
 
 
     fun forTargetType(name: String, instrumentationFun: (InstrumentationDescription.Builder) -> InstrumentationDescription) =
-            super.forTargetType({ name }, instrumentationFun.toVavrFunc())
+            super.forTargetType(Supplier { name }, instrumentationFun.toVavrFunc())
 
 
     fun forTargetType(names: List<String>, instrumentationFun: (InstrumentationDescription.Builder) -> InstrumentationDescription) =
-            names.forEach { forTargetType(it, instrumentationFun) }
+            forRawMatching({ anyTypes(*names.toTypedArray()) }, instrumentationFun)
 
+    fun forRawMatching(matcher: () -> ElementMatcher<in TypeDescription>, instrumentationFun: (InstrumentationDescription.Builder) -> InstrumentationDescription) =
+        super.forRawMatching(Supplier { matcher.invoke() }, instrumentationFun.toVavrFunc())
 
-    fun isConstructor(): Element = BBMatchers.isConstructor()
+    override fun isConstructor(): Element = BBMatchers.isConstructor()
 
-    fun isAbstract(): Element = BBMatchers.isAbstract()
+    override fun isAbstract(): Element = BBMatchers.isAbstract()
 
-    fun method(name: String): Element = BBMatchers.named(name)
+    override fun method(name: String): Element = BBMatchers.named(name)
 
-    fun takesArguments(quantity: Int): Element = BBMatchers.takesArguments(quantity)
+    override fun takesArguments(quantity: Int): Element = BBMatchers.takesArguments(quantity)
 
     fun takesVarArguments(vararg classes: Class<*>): Element = BBMatchers.takesArguments(*classes)
 
